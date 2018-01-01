@@ -28,13 +28,13 @@ async def on_message(message):
         await client.send_message(message.channel, msg)
 
 
-async def added_daily():
+async def added_hourly():
     await client.wait_until_ready()
     channel = discord.Object(id=channels.new_releases)
     felix_url_base = 'http://localhost:8000/'
     headers = {'Authorization': 'Bearer {0}'.format(auth.felix_token)}
 
-    felix_url = '{0}media/days/1'.format(felix_url_base)
+    felix_url = '{0}media/hours/1'.format(felix_url_base)
 
     while not client.is_closed:
         response = requests.get(felix_url, headers=headers)
@@ -48,9 +48,9 @@ async def added_daily():
             message += season['title'] + ' Season ' + str(season['season']) + '\n'
 
         await client.send_message(channel, message)
-        print('added_daily() ran')
-        await asyncio.sleep(86400)
+        print('added_daily()')
+        await asyncio.sleep(3600)
 
 
-client.loop.create_task(added_daily())
+client.loop.create_task(added_hourly())
 client.run(auth.discord_token)
