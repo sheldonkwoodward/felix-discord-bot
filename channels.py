@@ -1,1 +1,1 @@
-update_channel = 'CHANNEL ID HERE'
+new_releases = 'CHANNEL ID GOES HERE'
