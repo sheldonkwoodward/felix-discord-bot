@@ -1,0 +1,56 @@
+import discord
+import asyncio
+import requests
+import json
+
+import auth
+import channels
+
+client = discord.Client()
+
+
+@client.event
+async def on_ready():
+    print('Logged in as')
+    print(client.user.name)
+    print(client.user.id)
+    print('------')
+
+
+@client.event
+async def on_message(message):
+    # we do not want the bot to reply to itself
+    if message.author == client.user:
+        return
+
+    if message.content.startswith('!hello'):
+        msg = 'Hello {0.author.mention}'.format(message)
+        await client.send_message(message.channel, msg)
+
+
+async def added_daily():
+    await client.wait_until_ready()
+    channel = discord.Object(id=channels.new_releases)
+    felix_url_base = 'http://localhost:8000/'
+    headers = {'Authorization': 'Bearer {0}'.format(auth.felix_token)}
+
+    felix_url = '{0}media/days/1'.format(felix_url_base)
+
+    while not client.is_closed:
+        response = requests.get(felix_url, headers=headers)
+        response = json.loads(response.content.decode('utf-8'))
+
+        message = '__**Movies Added Today**__\n'
+        for movie in response['movies']:
+            message += movie['title'] + ' (' + str(movie['release_year']) + ')\n'
+        message += '\n__**Seasons Added Today**__\n'
+        for season in response['seasons']:
+            message += season['title'] + ' Season ' + str(season['season']) + '\n'
+
+        await client.send_message(channel, message)
+        print('added_daily() ran')
+        await asyncio.sleep(86400)
+
+
+client.loop.create_task(added_daily())
+client.run(auth.discord_token)
