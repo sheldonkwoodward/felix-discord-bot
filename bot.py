@@ -1,4 +1,5 @@
 import discord
+import auth
 
 client = discord.Client()
 
@@ -21,4 +22,4 @@ async def on_ready():
     print(client.user.id)
     print('------')
 
-client.run('TOKEN GOES HERE')
+client.run(auth.token)
