@@ -40,10 +40,10 @@ async def added_hourly():
         response = requests.get(felix_url, headers=headers)
         response = json.loads(response.content.decode('utf-8'))
 
-        message = '__**Movies Added Today**__\n'
+        message = '__**New Movies**__\n'
         for movie in response['movies']:
             message += movie['title'] + ' (' + str(movie['release_year']) + ')\n'
-        message += '\n__**Seasons Added Today**__\n'
+        message += '\n__**New Seasons**__\n'
         for season in response['seasons']:
             message += season['title'] + ' Season ' + str(season['season']) + '\n'
 
