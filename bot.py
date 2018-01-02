@@ -40,14 +40,21 @@ async def added_hourly():
         response = requests.get(felix_url, headers=headers)
         response = json.loads(response.content.decode('utf-8'))
 
-        message = '__**New Movies**__\n'
-        for movie in response['movies']:
-            message += movie['title'] + ' (' + str(movie['release_year']) + ')\n'
-        message += '\n__**New Seasons**__\n'
-        for season in response['seasons']:
-            message += season['title'] + ' Season ' + str(season['season']) + '\n'
+        print(response['movie_num'])
+        print(response['season_num'])
 
-        await client.send_message(channel, message)
+        message = str()
+        if response['movie_num'] > 0:
+            message += '__**New Movies**__\n'
+            for movie in response['movies']:
+                message += movie['title'] + ' (' + str(movie['release_year']) + ')\n'
+        if response['season_num'] > 0:
+            message += '__**New Seasons**__\n'
+            for season in response['seasons']:
+                message += season['title'] + ' Season ' + str(season['season']) + '\n'
+
+        if response['movie_num'] > 0 or response['season_num'] > 0:
+            await client.send_message(channel, message)
         print('added_hourly()')
         await asyncio.sleep(3600)
 
