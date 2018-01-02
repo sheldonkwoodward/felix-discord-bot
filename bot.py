@@ -48,7 +48,7 @@ async def added_hourly():
             message += season['title'] + ' Season ' + str(season['season']) + '\n'
 
         await client.send_message(channel, message)
-        print('added_daily()')
+        print('added_hourly()')
         await asyncio.sleep(3600)
 
 
