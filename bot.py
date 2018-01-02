@@ -40,9 +40,6 @@ async def added_hourly():
         response = requests.get(felix_url, headers=headers)
         response = json.loads(response.content.decode('utf-8'))
 
-        print(response['movie_num'])
-        print(response['season_num'])
-
         message = str()
         if response['movie_num'] > 0:
             message += '__**New Movies**__\n'
