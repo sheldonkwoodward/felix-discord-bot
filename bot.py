@@ -44,7 +44,12 @@ async def added_hourly():
         if response['movie_num'] > 0:
             message += '__**New Movies**__\n'
             for movie in response['movies']:
-                message += movie['title'] + ' (' + str(movie['release_year']) + ')\n'
+                message += movie['title'] + ' (' + str(movie['release_year']) + ')'
+                if movie['resolution'] != '1080p':
+                    message += ' - ' + movie['resolution'] + '\n'
+                else:
+                    message += '\n'
+                    
         if response['season_num'] > 0:
             message += '__**New Seasons**__\n'
             for season in response['seasons']:
